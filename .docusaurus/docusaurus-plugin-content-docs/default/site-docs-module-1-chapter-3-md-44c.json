@@ -1,0 +1,23 @@
+{
+  "id": "module1/chapter3",
+  "title": "Chapter 3 - Advanced Features and Deployment",
+  "description": "Overview",
+  "source": "@site/docs/module1/chapter3.md",
+  "sourceDirName": "module1",
+  "slug": "/module1/chapter3",
+  "permalink": "/docs/module1/chapter3",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alina-classes/HACKATHON-Q4/edit/main/docs/module1/chapter3.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Chapter 3 - Advanced Features and Deployment",
+    "sidebar_label": "Chapter 3"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Chapter 2",
+    "permalink": "/docs/module1/chapter2"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "intro",
+  "title": "Introduction",
+  "description": "Welcome to the comprehensive documentation for our technical book project. This documentation site is built using Docusaurus, a modern static site generator designed for creating documentation websites.",
+  "source": "@site/docs/intro.md",
+  "sourceDirName": ".",
+  "slug": "/intro",
+  "permalink": "/docs/intro",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/alina-classes/HACKATHON-Q4/edit/main/docs/intro.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Introduction",
+    "sidebar_label": "Introduction"
+  },
+  "sidebar": "tutorialSidebar",
+  "next": {
+    "title": "Chapter 1",
+    "permalink": "/docs/module1/chapter1"
+  }
+}
