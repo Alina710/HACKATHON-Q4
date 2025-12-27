@@ -1,0 +1,96 @@
+# OpenAPI Contract: RAG Query API
+
+## Query Endpoint
+
+### POST /query
+Process a user query against the RAG system.
+
+#### Request
+- **Content-Type**: `application/json`
+- **Body**:
+  ```json
+  {
+    "query": "string (required) - The user's question or search query",
+    "user_id": "string (optional) - Identifier for the user making the request",
+    "context": "object (optional) - Additional context for the query"
+  }
+  ```
+
+#### Response
+- **200 OK**: Successful query processing
+  ```json
+  {
+    "query_id": "string - Unique identifier for the query",
+    "answer": "string - The agent's response to the query",
+    "sources": [
+      {
+        "title": "string - Title of the source document",
+        "url": "string - URL to access the source document",
+        "snippet": "string - Relevant text snippet from the source",
+        "page_number": "integer - Page number if from a multi-page document"
+      }
+    ],
+    "confidence_score": "float - Confidence level of the response (0.0-1.0)",
+    "timestamp": "datetime - When the response was generated"
+  }
+  ```
+
+- **400 Bad Request**: Invalid query parameters
+  ```json
+  {
+    "error": "string - Error message describing the issue",
+    "error_code": "string - Specific error code"
+  }
+  ```
+
+- **500 Internal Server Error**: Server-side processing error
+  ```json
+  {
+    "error": "string - Error message describing the issue",
+    "error_code": "string - Specific error code"
+  }
+  ```
+
+#### Example Request
+```http
+POST /query
+Content-Type: application/json
+
+{
+  "query": "What are the key concepts in chapter 3?",
+  "user_id": "user_123",
+  "context": {
+    "current_page": "/docs/chapter-2",
+    "session_id": "session_456"
+  }
+}
+```
+
+#### Example Response
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "query_id": "query_789",
+  "answer": "Chapter 3 covers the fundamental concepts of RAG systems...",
+  "sources": [
+    {
+      "title": "Chapter 3: RAG Fundamentals",
+      "url": "/docs/chapter-3",
+      "snippet": "The retrieval-augmented generation (RAG) system combines...",
+      "page_number": 1
+    }
+  ],
+  "confidence_score": 0.92,
+  "timestamp": "2025-12-27T10:30:00Z"
+}
+```
+
+## Error Handling
+
+### Common Error Codes
+- `QUERY_TOO_LONG`: Query exceeds maximum character limit
+- `INVALID_QUERY_FORMAT`: Query contains invalid characters or format
+- `RAG_SYSTEM_UNAVAILABLE`: RAG agent is temporarily unavailable
+- `INTERNAL_ERROR`: General server-side error
