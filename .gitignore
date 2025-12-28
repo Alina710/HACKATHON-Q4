@@ -1,95 +1,78 @@
-# Dependencies
+# ========================
+# Node / Frontend
+# ========================
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
+# ========================
 # Python
+# ========================
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+*.pyc
+*.pyo
+*.pyd
 
-# Virtual Environment
+# ========================
+# Virtual Environments
+# ========================
 venv/
 env/
 ENV/
 .venv/
-env.bak/
-.ENV/
+.env/
 
+# ========================
 # Build outputs
+# ========================
 build/
 dist/
 out/
+.eggs/
+*.egg-info/
 
+# ========================
 # Environment variables
+# ========================
 .env*
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# Docusaurus
-.docusaurus/
-.cache/
-
+# ========================
 # Logs
+# ========================
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+uvicorn_error.log
+access.log
+error.log
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Coverage directory used by tools like istanbul
+# ========================
+# Coverage / Temp
+# ========================
 coverage/
-*.lcov
-
-# Temporary folders
 tmp/
 temp/
 
-# OS generated files
+# ========================
+# OS files
+# ========================
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
-# Editor related
+# ========================
+# Editors
+# ========================
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# Local development
-.local/
-
-# TypeScript
-tsconfig.tsbuildinfo
-
-# FastAPI/Uvicorn
-uvicorn_error.log
-access.log
-error.log
+# ========================
+# Docusaurus / Cache
+# ========================
+.docusaurus/
+.cache/
