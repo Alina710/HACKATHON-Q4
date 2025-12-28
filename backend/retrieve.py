@@ -36,7 +36,7 @@ class QdrantRetriever:
         if url is None:
             url = os.getenv("QDRANT_URL")
             if not url:
-                raise ValueError("Qdrant URL not provided and QDRANT_URL environment variable not set")
+                raise ValueError("Qdrant URL not provided and QDRANT_URL environment variable not set. Please set the QDRANT_URL environment variable in your .env file.")
 
         if api_key is None:
             api_key = os.getenv("QDRANT_API_KEY")
@@ -139,7 +139,7 @@ class CohereEmbedder:
         if api_key is None:
             api_key = os.getenv("COHERE_API_KEY")
             if not api_key:
-                raise ValueError("Cohere API key not provided and COHERE_API_KEY environment variable not set")
+                raise ValueError("Cohere API key not provided and COHERE_API_KEY environment variable not set. Please set the COHERE_API_KEY environment variable in your .env file.")
 
         self.client = cohere.Client(api_key)
         self.model = "embed-english-v3.0"

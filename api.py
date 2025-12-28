@@ -108,6 +108,12 @@ except ImportError as e:
     agent_instance = None
     run_agent_query = None
     print(f"Warning: agent module not found: {e}. This may be expected during initial setup.")
+except ValueError as e:
+    # Handle environment variable errors (like missing API keys)
+    RAGAgent = None
+    agent_instance = None
+    run_agent_query = None
+    print(f"Warning: Environment configuration error: {e}. Please check your .env file contains all required variables (OPENROUTER_API_KEY, COHERE_API_KEY, QDRANT_URL).")
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

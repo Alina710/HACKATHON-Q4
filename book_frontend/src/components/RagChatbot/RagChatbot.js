@@ -96,7 +96,16 @@ const RagChatbot = () => {
       const result = await ragAPIService.queryRAG(query.trim());
       setResponse(result);
     } catch (err) {
-      setError('Failed to get response from RAG system. Please try again.');
+      // Provide more specific error messages based on the error type
+      if (err.message && err.message.includes('NetworkError')) {
+        setError('Network error: Unable to connect to the RAG system. Please check your connection and try again.');
+      } else if (err.message && err.message.includes('400')) {
+        setError('Invalid request: Please check your query and try again.');
+      } else if (err.message && err.message.includes('500')) {
+        setError('Server error: The RAG system encountered an error. Please check the server configuration.');
+      } else {
+        setError('Failed to get response from RAG system. Please check that the backend is running and environment variables are configured.');
+      }
       console.error('Error querying RAG system:', err);
     } finally {
       setIsLoading(false);

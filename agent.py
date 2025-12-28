@@ -26,7 +26,7 @@ OPENROUTER_BASE_URL = os.getenv(
 )
 
 if not OPENROUTER_API_KEY:
-    raise ValueError("OPENROUTER_API_KEY not found in .env file")
+    raise ValueError("OPENROUTER_API_KEY not found in .env file. Please set the OPENROUTER_API_KEY environment variable.")
 
 # --------------------------------------------------
 # Initialize OpenRouter client

@@ -27,6 +27,10 @@ class RAGAPIService {
       return data;
     } catch (error) {
       console.error('Error querying RAG system:', error);
+      // Re-throw with more context
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        throw new Error('NetworkError: Unable to connect to the RAG API. Please ensure the backend server is running on http://localhost:8000');
+      }
       throw error;
     }
   }

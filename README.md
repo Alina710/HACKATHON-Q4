@@ -24,8 +24,9 @@ The system consists of several modules:
 ## Prerequisites
 
 - Python 3.9+
-- Cohere API key
-- Qdrant Cloud account and API key
+- OpenRouter API key (for the LLM agent)
+- Cohere API key (for embeddings)
+- Qdrant Cloud account and API key (for vector storage)
 
 ## Installation
 
@@ -36,6 +37,7 @@ The system consists of several modules:
 
 2. Set up environment variables:
    ```bash
+   export OPENROUTER_API_KEY="your-openrouter-api-key"
    export COHERE_API_KEY="your-cohere-api-key"
    export QDRANT_URL="your-qdrant-url"
    export QDRANT_API_KEY="your-qdrant-api-key"
@@ -110,8 +112,9 @@ python test_imports.py
 
 ## Environment Variables
 
-- `COHERE_API_KEY`: Your Cohere API key
-- `QDRANT_URL`: URL for your Qdrant instance
+- `OPENROUTER_API_KEY`: Your OpenRouter API key (required for the RAG agent)
+- `COHERE_API_KEY`: Your Cohere API key (required for embeddings)
+- `QDRANT_URL`: URL for your Qdrant instance (required for vector storage)
 - `QDRANT_API_KEY`: API key for Qdrant (if required)
 
 ## Project Structure
