@@ -1,0 +1,29 @@
+# Configuration for RAG Book Content Ingestion
+# This file contains default settings for the ingestion pipeline
+
+# Crawler settings
+CRAWLER:
+  DELAY: 1.0  # Delay between requests in seconds
+  MAX_PAGES: 100  # Maximum number of pages to crawl per site
+  USER_AGENT: "Mozilla/5.0 (compatible; DocusaurusCrawler/1.0; +http://example.com/bot)"
+
+# Chunker settings
+CHUNKER:
+  CHUNK_SIZE: 512  # Maximum size of each chunk (in characters)
+  OVERLAP: 50  # Number of characters to overlap between chunks
+  MIN_CHUNK_SIZE: 100  # Minimum size for a chunk to be included
+
+# Embedder settings
+EMBEDDER:
+  MODEL: "embed-english-v3.0"  # Cohere embedding model to use
+  BATCH_SIZE: 96  # Maximum batch size for embedding API
+
+# Storage settings
+STORAGE:
+  COLLECTION_NAME: "book_embeddings"  # Name of the Qdrant collection
+  BATCH_SIZE: 64  # Number of points to upload at once
+
+# Search settings
+SEARCH:
+  DEFAULT_LIMIT: 5  # Default number of results to return
+  TEXT_TYPE: "search_query"  # Text type for search queries

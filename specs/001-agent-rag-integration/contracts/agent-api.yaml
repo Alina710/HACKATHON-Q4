@@ -1,0 +1,300 @@
+openapi: 3.0.0
+info:
+  title: AI Agent with Retrieval-Augmented Capabilities API
+  description: API specification for the AI agent that answers questions using retrieved book content
+  version: 1.0.0
+
+paths:
+  /agent/session:
+    post:
+      summary: Create a new agent session
+      description: Creates a new conversation session with the AI agent
+      responses:
+        '201':
+          description: Session created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentSession'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /agent/session/{session_id}/question:
+    post:
+      summary: Ask a question to the agent
+      description: Sends a question to the agent and returns a response based on retrieved content
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          description: ID of the agent session
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  description: The question to ask the agent
+                  example: "What are the key concepts in chapter 3?"
+                max_chunks:
+                  type: integer
+                  description: Maximum number of content chunks to retrieve (optional)
+                  default: 5
+      responses:
+        '200':
+          description: Agent response generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentResponse'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /agent/session/{session_id}:
+    get:
+      summary: Get session status
+      description: Retrieves the current status of an agent session
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          description: ID of the agent session
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Session status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentSession'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /agent/session/{session_id}/end:
+    post:
+      summary: End a session
+      description: Explicitly ends an agent session
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          description: ID of the agent session
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Session ended successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Session ended successfully"
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /agent/retrieve:
+    post:
+      summary: Direct content retrieval
+      description: Retrieves content chunks from Qdrant without generating an agent response
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  description: The query to search for in the knowledge base
+                  example: "information about machine learning concepts"
+                limit:
+                  type: integer
+                  description: Maximum number of chunks to retrieve
+                  default: 5
+      responses:
+        '200':
+          description: Content retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetrievedChunk'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    AgentSession:
+      type: object
+      required:
+        - session_id
+        - thread_id
+        - created_at
+        - status
+      properties:
+        session_id:
+          type: string
+          description: Unique identifier for the conversation session
+          example: "sess_abc123"
+        thread_id:
+          type: string
+          description: OpenAI thread ID for maintaining conversation context
+          example: "thread_xyz789"
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when session was created
+        last_activity:
+          type: string
+          format: date-time
+          description: Timestamp of last interaction
+        context_window:
+          type: integer
+          description: Number of conversation turns maintained
+          minimum: 1
+          maximum: 5
+        status:
+          type: string
+          enum: [CREATED, ACTIVE, INACTIVE, ENDED]
+          description: Current status of the session
+
+    AgentResponse:
+      type: object
+      required:
+        - response_id
+        - session_id
+        - query
+        - response_text
+        - retrieved_chunks
+        - timestamp
+      properties:
+        response_id:
+          type: string
+          description: Unique identifier for the response
+          example: "resp_def456"
+        session_id:
+          type: string
+          description: Reference to the conversation session
+          example: "sess_abc123"
+        query:
+          type: string
+          description: Original user query
+          example: "What are the key concepts in chapter 3?"
+        retrieved_chunks:
+          type: array
+          description: Content chunks used to generate response
+          items:
+            $ref: '#/components/schemas/RetrievedChunk'
+        response_text:
+          type: string
+          description: Agent's generated response
+          example: "Based on the retrieved content, the key concepts in chapter 3 are..."
+        confidence_score:
+          type: number
+          format: float
+          description: Confidence level in response accuracy
+          minimum: 0.0
+          maximum: 1.0
+          example: 0.85
+        timestamp:
+          type: string
+          format: date-time
+          description: When response was generated
+
+    RetrievedChunk:
+      type: object
+      required:
+        - id
+        - content
+        - source_url
+        - title
+        - chunk_index
+        - score
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the chunk
+          example: "chunk_001"
+        content:
+          type: string
+          description: The actual text content of the chunk
+          example: "The concept of machine learning involves..."
+        source_url:
+          type: string
+          format: uri
+          description: URL where the content originated
+          example: "https://example.com/book/chapter3"
+        title:
+          type: string
+          description: Title of the source document
+          example: "Chapter 3: Machine Learning Fundamentals"
+        chunk_index:
+          type: integer
+          description: Position of chunk in original document
+          example: 2
+        score:
+          type: number
+          format: float
+          description: Similarity score from vector search
+          minimum: 0.0
+          maximum: 1.0
+          example: 0.92
+        metadata:
+          type: object
+          description: Additional metadata associated with the chunk
+          additionalProperties: true
+
+    Error:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error code
+          example: "NOT_FOUND"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "Session not found"

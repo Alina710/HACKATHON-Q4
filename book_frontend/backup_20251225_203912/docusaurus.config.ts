@@ -9,8 +9,7 @@ const config: Config = {
   tagline: 'Learn about ROS 2 as the middleware nervous system for humanoid robots',
   favicon: 'img/favicon.ico',
 
-  // Future flags, see https://docusaurus.io/doc
-  // s/api/docusaurus-config#future
+  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
